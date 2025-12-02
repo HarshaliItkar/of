@@ -1,0 +1,48 @@
+Algorithm: Algorithm: Four-Way Traffic Light Control with Count down Display
+Step 1: Start
+ Step 2: Initialize the System
+ • Set all LED pins (Red, Yellow, Green for 4 directions) as OUTPUT.
+ • Initialize the TM1637 4-digit 7-segment display and set brightness.
+ Step 3: Set LED Logic Arrays
+ • Create arrays for RED[], YELLOW[], and GREEN[] for North, East,
+ South, and West.
+ Step 4: Enter Main Loop
+ For each direction in the order: North → East → South → West
+ • Turn ON Red LEDs for all directions.
+ • Turn OFF Yellow and Green LEDs for all directions.
+ • Set RED[Current] = LOW, GREEN[Current] = HIGH.
+ • Start 10-second countdown using TM1637 (00:10 to 00:00).
+ • Turn OFF Green, turn ON YELLOW[Current].
+ • Start 3-second countdown.
+ • Turn OFF Yellow, set RED[Current] = HIGH.
+ Step 5: Repeat
+
+Code : 
+int LEDRed = 13;
+int LEDYellow = 12;
+int LEDGreen = 11;
+int delayT = 500;
+
+void setup()
+{
+    pinMode(LEDRed, OUTPUT);
+    pinMode(LEDYellow, OUTPUT);
+    pinMode(LEDGreen, OUTPUT);
+}
+void loop()
+{
+    digitalWrite(LEDRed, HIGH);
+    delay(delayT);
+    digitalWrite(LEDRed, LOW);
+    delay(delayT);
+
+    digitalWrite(LEDYellow, HIGH);
+    delay(delayT);
+    digitalWrite(LEDYellow, LOW);
+    delay(delayT);
+
+    digitalWrite(LEDGreen, HIGH);
+    delay(delayT);
+    digitalWrite(LEDGreen, LOW);
+    delay(delayT);
+}
