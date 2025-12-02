@@ -1,0 +1,38 @@
+Algorithm : 
+ 1. Start
+ 2. Include include LiquidCrystal_I2C.h by including respective libraries
+ 3. Set the LCD address to 0x3F for a 16 chars and 2 line display
+ 4. Initialize LCD by calling fucntion, clear LCD, Make sure backlight is on.
+ 5. In Loop function
+ a. Set cursor to character initial i.e. 0 position on line 1 i.e. by putting value
+ 0 and Display user define message
+ b. Set cursor to character initial i.e. 0 position on line 2 i.e. by putting value
+ 1 and Display user define message on line 2.
+ 6. Stop
+
+Code : 
+#include <LiquidCrystal.h>
+
+const int rs = 12;
+const int en = 11;
+const int d4 = 5;
+const int d5 = 4;
+const int d6 = 3;
+const int d7 = 2;
+
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+void setup()
+{
+
+  lcd.begin(16, 2);
+
+  lcd.print("Harshali");
+
+  lcd.setCursor(0, 1);
+  lcd.print("313051");
+}
+
+void loop()
+{
+}
