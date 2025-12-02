@@ -1,0 +1,36 @@
+Algorithm :
+Start
+Connect servo motor to PWM pin
+Initialize servo library
+Move servo to 0°
+Move servo to 180°
+Return servo to 0°
+Repeat continuously
+End
+
+Code : 
+#include <Servo.h>
+Servo myServo;
+void setup()
+{
+    myServo.attach(9);
+    Serial.begin(9600);
+    Serial.println("Servo Motor Control: 0° to 180° and back to 0°");
+}
+void loop()
+{
+    for (int angle = 0; angle <= 180; angle++)
+    {
+        myServo.write(angle);
+        Serial.print("Angle: ");
+        Serial.println(angle);
+        delay(15);
+    }
+    for (int angle = 180; angle >= 0; angle--)
+    {
+        myServo.write(angle);
+        Serial.print("Angle: ");
+        Serial.println(angle);
+        delay(15);
+    }
+}
