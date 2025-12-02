@@ -1,0 +1,49 @@
+Algorithm :
+
+Start
+Connect moisture sensor and motor to Arduino
+Read moisture value from sensor
+Display moisture level on Serial Monitor
+If soil is dry → turn ON motor
+If soil is wet → turn OFF motor
+Record readings in observation table
+Repeat continuously
+End
+
+Code : 
+
+const int moisturePin = A0; 
+const int relayPin = 8;     
+
+
+const int dryThreshold = 900; 
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(relayPin, OUTPUT);
+  digitalWrite(relayPin, HIGH); 
+}
+
+void loop()
+{
+  int moistureValue = analogRead(moisturePin);
+
+  Serial.print("Moisture Value: ");
+  Serial.println(moistureValue);
+
+  if (moistureValue > dryThreshold)
+  {
+    // Soil is dry → turn pump ON
+    digitalWrite(relayPin, LOW); // Active LOW relay
+    Serial.println("Pump ON");
+  }
+  else
+  {
+    // Soil is wet → turn pump OFF
+    digitalWrite(relayPin, HIGH);
+    Serial.println("Pump OFF");
+  }
+
+  delay(1000); // Check every second
+}
