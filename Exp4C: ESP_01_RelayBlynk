@@ -1,0 +1,70 @@
+Algorithm
+ 1. Start
+ 2. Configure port GPIO0 pin as output pin where Relay are connected.
+ 3. Send logic 0 to port pin (Turn ON Relay as it is negative triggered relay).
+ 4. Give a delay of 1 second.
+ 5. Send logic 1 to port pin.(To turn OFF relay)
+ 6. Give a delay of 1 second.
+ 7. Go to step 2
+ 8. Stop
+
+Code :
+#define BLYNK_TEMPLATE_ID           "TMPL3S7jRCX4z"
+#define BLYNK_TEMPLATE_NAME         "Quickstart Template"
+#define BLYNK_AUTH_TOKEN            "gsxZtdVMu85hCP6hRZgzDgOr4E2a4FXl"
+
+
+#define BLYNK_PRINT Serial
+
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+char ssid[] = "Test";           // Your WiFi SSID
+char pass[] = "0000000000";     // Your WiFi Password
+
+BlynkTimer timer;
+
+#define RELAY_PIN 0    
+
+
+BLYNK_WRITE(V0)
+{
+  int value = param.asInt();
+  digitalWrite(RELAY_PIN, value);
+  
+  
+  Blynk.virtualWrite(V1, value);
+}
+
+
+BLYNK_CONNECTED()
+{
+  Blynk.setProperty(V3, "offImageUrl", "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations.png");
+  Blynk.setProperty(V3, "onImageUrl",  "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations_pressed.png");
+  Blynk.setProperty(V3, "url", "https://docs.blynk.io/en/getting-started/what-do-i-need-to-blynk/how-quickstart-device-was-made");
+}
+
+
+void myTimerEvent()
+{
+  Blynk.virtualWrite(V2, millis() / 1000);
+}
+
+void setup()
+{
+  Serial.begin(115200);
+
+  pinMode(RELAY_PIN, OUTPUT);
+  digitalWrite(RELAY_PIN, LOW); 
+
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+
+  
+  timer.setInterval(1000L, myTimerEvent);
+}
+
+void loop()
+{
+  Blynk.run();
+  timer.run();
+}
