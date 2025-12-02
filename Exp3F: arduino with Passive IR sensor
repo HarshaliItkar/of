@@ -1,0 +1,37 @@
+Algorithm :
+Start
+Connect PIR sensor and LED to Arduino
+Read PIR sensor output
+If motion is detected → turn ON LED
+If no motion → turn OFF LED
+Repeat continuously
+End
+
+Code : 
+const int pirPin = 7;  // PIR sensor output pin
+const int ledPin = 13; // Built-in LED on most Arduino boards
+
+void setup()
+{
+  pinMode(pirPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int pirState = digitalRead(pirPin);
+
+  if (pirState == HIGH)
+  {
+    digitalWrite(ledPin, HIGH); // LED ON
+    Serial.println("Motion detected!");
+  }
+  else
+  {
+    digitalWrite(ledPin, LOW); // LED OFF
+    Serial.println("No motion");
+  }
+
+  delay(500); // Small delay for stability
+}
