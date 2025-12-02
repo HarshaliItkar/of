@@ -1,0 +1,59 @@
+Algorithm :
+Start
+Connect IR sensor and TM1637 display
+Initialize display and set count to 0
+Detect object using IR sensor
+Increment count when object detected
+Display updated count on TM1637
+Repeat continuously
+End
+
+Code: 
+#include <TM1637Display.h>
+
+
+#define CLK 2
+#define DIO 3
+TM1637Display display(CLK, DIO);
+
+#define IR_PIN 4
+
+int count = 0;
+bool objectDetected = false;
+
+void setup()
+{
+    pinMode(IR_PIN, INPUT);
+
+    
+    Serial.begin(9600);
+
+    display.setBrightness(5);      
+    display.showNumberDec(0, true); 
+
+void loop()
+{
+    int irState = digitalRead(IR_PIN);
+
+    if (irState == LOW && !objectDetected)
+    {
+        
+        count++;
+        if (count > 9999)
+            count = 0; 
+
+        display.showNumberDec(count, true); // Show on 7-segment
+        Serial.print("Object Detected - Count: ");
+        Serial.println(count); // Show on Serial Monitor
+
+        objectDetected = true;
+    }
+
+    // Reset detection flag when no object
+    if (irState == HIGH)
+    {
+        objectDetected = false;
+    }
+
+    delay(50); // Debounce delay
+}
