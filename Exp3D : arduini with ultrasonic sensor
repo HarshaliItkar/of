@@ -1,0 +1,74 @@
+Algorithm :
+Start
+Connect Trigger and Echo pins to Arduino
+Initialize Serial Monitor
+Send trigger pulse
+Measure echo duration
+Convert duration to distance
+Display distance on Serial Monitor
+Record actual and observed values
+Repeat continuously
+End
+
+Code : 
+
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+int trig = 2;
+int echo = 3;
+
+
+long duration;
+int distance;
+
+void setup()
+{
+  pinMode(trig, OUTPUT);
+  pinMode(echo, INPUT);
+
+  
+  Serial.begin(9600); 
+
+  // Initialize LCD
+  lcd.init();
+  lcd.clear();
+  lcd.backlight();
+
+  lcd.setCursor(2, 0);
+  lcd.print("Distance");
+
+  lcd.setCursor(1, 1);
+  lcd.print("UltraSonic");
+  delay(2000);
+
+  lcd.clear();
+}
+
+void loop()
+{
+  
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+
+ 
+  duration = pulseIn(echo, HIGH);
+  distance = (duration / 2) * 0.0343; 
+
+  
+  lcd.setCursor(3, 0);
+  lcd.print("      "); 
+  lcd.setCursor(3, 0);
+  lcd.print(distance);
+  lcd.setCursor(6, 0);
+  lcd.print("cm");
+
+  // Print to Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  delay(500); 
+}
