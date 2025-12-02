@@ -1,0 +1,14 @@
+Algorithm
+ 1. Start
+ 2. Create a dashboard on Desktop/Laptop and mobile using the BLYNK app.
+ 3. Include necessary header files required for initialization of ESP WiFi module.
+ 4. Define necessary credentials of WiFi name and password
+ 5. Include token ID generated from Blynk
+ 6. Initialize the direction of the respective port pin as an output.
+ 7. Initialize virtual/digital pin in Blynk as per pins
+ 8. Capture the information captured through a virtual/digital pin and transfer
+ it to the respective port pin for control.
+ 9. Run Blynk in a forever loop
+ 10. Stop
+
+Code : 
