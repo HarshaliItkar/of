@@ -1,0 +1,67 @@
+Algorithm : 
+Start
+Connect LM35 to Arduino analog pin
+Initialize LCD/OLED display
+Read analog value from LM35
+Convert it to °C and °F
+Display temperature on LCD/OLED
+Record readings in observation table
+Repeat continuously
+End
+
+Code : 
+#include <LiquidCrystal_I2C.h>
+
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // (address, columns, rows)
+
+
+const int lm35Pin = A0;
+
+void setup()
+{
+  Serial.begin(9600);
+
+  
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temp Monitor");
+  delay(2000);
+  lcd.clear();
+}
+
+void loop()
+{
+  
+  int analogValue = analogRead(lm35Pin);
+  float voltage = analogValue * (5.0 / 1023.0);
+  float temperatureC = voltage * 100.0;
+  float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
+
+  
+  Serial.print("Temp: ");
+  Serial.print(temperatureC);
+  Serial.print(" C | ");
+  Serial.print(temperatureF);
+  Serial.println(" F");
+
+  
+  lcd.setCursor(0, 0);
+  lcd.print("Temp:       ");
+  lcd.setCursor(6, 0);
+  lcd.print(temperatureC, 1); // 1 decimal place
+  lcd.print((char)223);       // Degree symbol
+  lcd.print("C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Fahr:       ");
+  lcd.setCursor(6, 1);
+  lcd.print(temperatureF, 1);
+  lcd.print((char)223);
+  lcd.print("F");
+
+  delay(1000); // Refresh every 1 second
+}
