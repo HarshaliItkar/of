@@ -1,0 +1,104 @@
+Algorithm : 
+Start
+Include TFT and TouchScreen libraries
+Define touch pins, TFT size, colors, and calibration values
+Create TFT and TouchScreen objects
+Initialize TFT display (begin, set rotation, clear screen)
+Draw static UI (buttons/text)
+Initialize animation variables
+Loop:
+Read touch input
+Convert raw touch to screen coordinates
+Check if any UI button/area is touched
+Perform action and give visual feedback
+Update animation timer
+Erase previous frame
+Update object position
+Draw new animation frame
+Repeat loop continuously
+End
+
+Code : 
+
+#include <Adafruit_GFX.h>  
+#include <MCUFRIEND_kbv.h> 
+#include <TouchScreen.h>  
+
+#define YP A1 
+#define XM A2 
+#define YM 7  
+#define XP 6  
+
+#define TS_MINX 150
+#define TS_MAXX 920
+#define TS_MINY 120
+#define TS_MAXY 940
+#define MINPRESSURE 10
+#define MAXPRESSURE 1000
+
+TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+
+MCUFRIEND_kbv tft;
+
+int ballX = 60;
+int ballY = 60;
+int ballDX = 3;
+int ballDY = 3;
+int ballRadius = 10;
+#define BLACK 0x0000
+#define WHITE 0xFFFF
+#define RED 0xF800
+
+uint16_t bgColor = BLACK;
+void setup()
+{
+    Serial.begin(9600);
+    
+    uint16_t ID = tft.readID();
+    tft.begin(ID);
+    tft.setRotation(1); 
+    tft.fillScreen(bgColor);
+    
+    tft.setTextColor(WHITE);
+    tft.setTextSize(2);
+    tft.setCursor(50, 10);
+    tft.println("Start");
+}
+void loop()
+{
+    
+    tft.fillCircle(ballX, ballY, ballRadius, bgColor);
+    
+    ballX += ballDX;
+    ballY += ballDY;
+    
+    if (ballX <= ballRadius || ballX >= tft.width() - ballRadius)
+        ballDX = -ballDX;
+    if (ballY <= ballRadius || ballY >= tft.height() - ballRadius)
+        ballDY = -ballDY;
+   
+    tft.fillCircle(ballX, ballY, ballRadius, RED);
+    
+    TSPoint p = ts.getPoint();
+    pinMode(XM, OUTPUT); // Restore pin modes after getPoint()
+    pinMode(YP, OUTPUT);
+    if (p.z > MINPRESSURE && p.z < MAXPRESSURE)
+    {
+        
+        int x = map(p.y, TS_MINY, TS_MAXY, 0, tft.width());
+        int y = map(p.x, TS_MINX, TS_MAXX, 0, tft.height());
+        
+        if (x > 0 && y > 0 && x < tft.width() && y < tft.height())
+        {
+            
+            bgColor = random(0x10000); 
+            tft.fillScreen(bgColor);
+            
+            tft.setTextColor(WHITE);
+            tft.setCursor(50, 10);
+            tft.setTextSize(2);
+            tft.println("Harshali Itkar 313051");
+        }
+    }
+    delay(30);
+}
