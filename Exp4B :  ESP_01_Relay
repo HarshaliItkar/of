@@ -1,0 +1,24 @@
+Algorithm
+ 1. Start
+ 2. Configure port GPIO0 pin as output pin where Relay are connected.
+ 3. Send logic 0 to port pin (Turn ON Relay as it is negative triggered relay).
+ 4. Give a delay of 1 second.
+ 5. Send logic 1 to port pin.(To turn OFF relay)
+ 6. Give a delay of 1 second.
+ 7. Go to step 2
+ 8. Stop
+
+Code : 
+#define RELAY_PIN 0 // Use GPIO0, change to 2 if using GPIO2
+
+void setup() {
+  pinMode(RELAY_PIN, OUTPUT);
+  digitalWrite(RELAY_PIN, LOW); // Set relay OFF at startup (active LOW relays)
+}
+
+void loop() {
+  digitalWrite(RELAY_PIN, HIGH); // Turn relay ON (for some relay modules, HIGH triggers)
+  delay(2000);                   // Wait 2 seconds
+  digitalWrite(RELAY_PIN, LOW);  // Turn relay OFF
+  delay(2000);                   // Wait 2 seconds
+}
