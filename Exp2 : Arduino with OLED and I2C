@@ -1,0 +1,17 @@
+Algorithm : 
+1. Start
+ 2. includes all required library
+ 3. Define OLED display width, and display height, in pixels
+ 4. Declaration for SSD1306 display connected using I2C
+ 5. initialize the OLED object
+ 6. Clear the buffer
+ 8. Display Inverted Text
+ 9. Changing Font Size
+ 10. Display Numbers
+ 7. Set text size, text color, set cursor position, and Display Text
+ 11. Scroll full screen
+ 12. Display image
+ 13. Display various patterns like square, rectangle, circle etc
+ 14. Stop
+
+Code : 
